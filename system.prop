@@ -1,0 +1,4 @@
+# The launcher mod ships its own privapp permission whitelist; if any entry is
+# missing PackageManager kills the boot instead of logging. Downgrade to log so
+# a whitelist gap is a logcat warning, not a bootloop.
+ro.control_privapp_permissions=log

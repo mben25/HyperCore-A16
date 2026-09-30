@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths: [module.prop]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read module.prop
+        id: prop
+        run: |
+          echo "version=$(grep '^version=' module.prop | cut -d= -f2-)" >> "$GITHUB_OUTPUT"
+          echo "code=$(grep '^versionCode=' module.prop | cut -d= -f2-)" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if release exists
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ steps.prop.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build zip and update.json
+        if: steps.check.outputs.exists != 'true'
+        run: |
+          ZIP="HyperCore-A16-${{ steps.prop.outputs.version }}.zip"
+          zip -r9 "$ZIP" . -x '.git/*' '.github/*' '.gitignore' 'CHANGELOG.md' '*.zip' '*.DS_Store'
+          cat > update.json <<JSON
+          {
+            "version": "${{ steps.prop.outputs.version }}",
+            "versionCode": ${{ steps.prop.outputs.code }},
+            "zipUrl": "https://github.com/${{ github.repository }}/releases/download/${{ steps.prop.outputs.version }}/$ZIP",
+            "changelog": "https://raw.githubusercontent.com/${{ github.repository }}/main/CHANGELOG.md"
+          }
+          JSON
+          echo "ZIP=$ZIP" >> "$GITHUB_ENV"
+
+      - name: Publish release
+        if: steps.check.outputs.exists != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.prop.outputs.version }}" "$ZIP" update.json \
+            --title "HyperCore A16 ${{ steps.prop.outputs.version }}" \
+            --notes-file CHANGELOG.md --latest

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shared-library declarations for HyperCore-A16.
+
+  Stock HyperOS keeps miui-framework.jar on the BOOTCLASSPATH and never declares
+  it here, so the ROM's own platform-miui.xml has no "miui"/"com.miui.core"
+  entries. On an AOSP-based ROM the jar is not on the boot classpath, so every
+  name the launcher resolves through <uses-library> has to be declared
+  explicitly. HyperOS 3 also dropped miui.apk (com.miui.core) entirely — its
+  classes now live in miui-framework.jar, which is what com.miui.core maps to
+  below.
+-->
+<permissions>
+    <library name="miui"
+        file="/system_ext/framework/miui-framework.jar" />
+    <library name="miuiframework"
+        file="/system_ext/framework/miui-framework.jar" />
+    <library name="com.miui.core"
+        file="/system_ext/framework/miui-framework.jar" />
+    <library name="com.miui.system"
+        file="/system_ext/app/miuisystem/miuisystem.apk" />
+    <library name="com.miui.rom"
+        file="/system_ext/framework/framework-ext-res/framework-ext-res.apk" />
+    <library name="pag-hyperos-release.jar"
+        file="/system_ext/framework/pag-hyperos-release.jar" />
+    <!-- v1.1: required by the gallery editor (com.miui.mediaeditor).
+         micloud-sdk is NOT declared here: RtMiCloudSDK.apk declares it in its
+         own manifest, and a second declaration would make two providers. -->
+    <library name="security-device-credential-sdk.jar"
+        file="/system_ext/framework/security-device-credential-sdk.jar" />
+</permissions>
