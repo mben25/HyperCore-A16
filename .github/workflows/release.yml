@@ -33,7 +33,9 @@ jobs:
       - name: Build zip and update.json
         if: steps.check.outputs.exists != 'true'
         run: |
-          ZIP="HyperCore-A16-${{ steps.prop.outputs.version }}.zip"
+          # Short zip name: v1.2-OS3.0.302.0.WNRMIXM -> HyperCore-A16-v1.2.zip
+          V="${{ steps.prop.outputs.version }}"
+          ZIP="HyperCore-A16-${V%%-*}.zip"
           zip -r9 "$ZIP" . -x '.git/*' '.github/*' '.gitignore' 'CHANGELOG.md' '*.zip' '*.DS_Store'
           cat > update.json <<JSON
           {
