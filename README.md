@@ -7,6 +7,8 @@ Built for crDroid on Redmi Note 13 Pro 5G (garnet), arm64-v8a only.
 
 ## Changelog
 
+- v1.2 — `com.miui.system` / `com.miui.rom` pull in `miui-framework.jar`
+  (fixes HyperGalleryAI `NoClassDefFoundError: miui.os.Build` at launch).
 - v1.1 — add `RtMiCloudSDK.apk` (`micloud-sdk`) and
   `security-device-credential-sdk.jar` for the HyperGallery modules.
 - v1.0 — initial release (launcher libraries).
@@ -88,6 +90,13 @@ HyperGalleryAI / HyperGalleryEditor modules declare them as *required*
 `<uses-library>` entries — without them PackageManager drops the apps at boot.
 Both are copied unmodified from the same ROM.
 
+**Library dependencies (v1.2).** Apps built for HyperOS assume
+`miui-framework.jar` is on the BOOTCLASSPATH, so the gallery only declares
+`com.miui.system` / `com.miui.rom` and never `com.miui.core` — then crashes on
+`miui.os.Build`. Both entries now carry `dependency="com.miui.core"`, which makes
+PackageManager add `miui-framework.jar` to the classloader of any app linking
+either one.
+
 ## Known gaps
 
 These classes are referenced by the launcher and **cannot** be provided:
@@ -109,7 +118,7 @@ v6.8 had the same gaps.
 
 ## Install
 
-1. Flash `HyperCore-A16-v1.1.zip` in Magisk or KernelSU.
+1. Flash `HyperCore-A16-v1.2.zip` in Magisk or KernelSU.
 2. Reboot.
 3. Install the HyperOS Launcher mod.
 

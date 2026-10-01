@@ -1,7 +1,7 @@
 id=HyperCoreA16
 name=HyperCore A16
-version=v1.1-OS3.0.302.0.WNRMIXM
-versionCode=2
+version=v1.2-OS3.0.302.0.WNRMIXM
+versionCode=3
 author=mbenanaya
 description=HyperOS/MIUI core shared libraries extracted from garnet HyperOS 3.0.302.0 (Android 16, SDK 36). Provides com.miui.core, com.miui.system, com.miui.rom, pag-hyperos-release.jar, micloud-sdk and security-device-credential-sdk.jar so the HyperOS Launcher and HyperGallery modules run on AOSP-based ROMs. arm64-v8a, SDK 34+.
 updateJson=https://github.com/mben25/HyperCore-A16/releases/latest/download/update.json

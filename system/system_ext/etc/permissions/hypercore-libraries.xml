@@ -17,10 +17,16 @@
         file="/system_ext/framework/miui-framework.jar" />
     <library name="com.miui.core"
         file="/system_ext/framework/miui-framework.jar" />
+    <!-- v1.2: apps built for HyperOS (gallery, editor) only declare
+         com.miui.system / com.miui.rom and expect miui-framework.jar on the
+         boot classpath (miui.os.Build etc). The dependency pulls the jar into
+         their classloader. -->
     <library name="com.miui.system"
-        file="/system_ext/app/miuisystem/miuisystem.apk" />
+        file="/system_ext/app/miuisystem/miuisystem.apk"
+        dependency="com.miui.core" />
     <library name="com.miui.rom"
-        file="/system_ext/framework/framework-ext-res/framework-ext-res.apk" />
+        file="/system_ext/framework/framework-ext-res/framework-ext-res.apk"
+        dependency="com.miui.core" />
     <library name="pag-hyperos-release.jar"
         file="/system_ext/framework/pag-hyperos-release.jar" />
     <!-- v1.1: required by the gallery editor (com.miui.mediaeditor).
